@@ -20,7 +20,7 @@ settings = {
         "pywikibot>=6.5.0",
     ],
     "packages": ["GlouphrieTranslator"],
-    "include_package_data": "True",
+    "include_package_data": True,
     "packages_data": {
         "GlouphrieTranslator": ["txts/*.txt"],
         "GlouphrieTranslator": ["jsons/*.json"],
