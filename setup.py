@@ -21,7 +21,7 @@ settings = {
     ],
     "packages": ["GlouphrieTranslator"],
     "include_package_data": True,
-    "packages_data": {
+    "package_data": {
         "GlouphrieTranslator": ["txts/*.txt"],
         "GlouphrieTranslator": ["jsons/*.json"],
     },
