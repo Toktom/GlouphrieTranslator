@@ -21,6 +21,7 @@ from .parsers import (
     parse_quest,
     parse_restriction,
     parse_yes_no,
+    parse_exchange,
 )
 
 
@@ -93,6 +94,8 @@ class InfoboxItemParser(InfoboxParamParser):
                 parsed = parse_disassembly(param)
             elif self.param.en in ["value"]:
                 parsed = parse_int(param)
+            elif self.param.en == "exchange":
+                parsed = parse_exchange(param)
             elif self.param.en == "id":
                 if isinstance(param, list):
                     parsed = [parse_int(x) for x in param]
@@ -126,10 +129,10 @@ class InfoboxItemParser(InfoboxParamParser):
                 parsed = parse_yes_no(param)
             else:
                 parsed = str(param).replace("\n", "")
-                parsed = f"<!--Untranslatable:{parsed}-->\n"
+                parsed = f"{parsed} <!--Untranslatable-->\n"
         except:
             print("Failed to parse the parameter: ", self.param.en)
             parsed = str(param).replace("\n", "")
-            parsed = f"<!--Failed:{parsed}-->\n"
+            parsed = f"{parsed} <!--Failed-->\n"
 
         return f"|{self.param.br} = {parsed}"

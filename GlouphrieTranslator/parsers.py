@@ -20,8 +20,7 @@ def parse_int(param: any) -> str:
     if isinstance(int(param), int):
         return param
     else:
-        pass
-    return param
+        return f"{param} <!--Failed-->\n"
 
 
 def parse_float(param: any) -> str:
@@ -29,8 +28,7 @@ def parse_float(param: any) -> str:
     if isinstance(float(param), float):
         return param.replace(".", ",")
     else:
-        pass
-    return param.replace(".", ",")
+        return param.replace(".", ",") + " <!--Failed-->\n"
 
 
 def parse_yes_no(param: any) -> str:
@@ -41,7 +39,7 @@ def parse_yes_no(param: any) -> str:
         return "Não\n"
     else:
         parsed = str(param).replace("\n", "")
-        return f"<!--Failed: {parsed}-->\n"
+        return f"{parsed} <!--Failed-->\n"
 
 
 def parse_disassembly(param: any) -> str:
@@ -70,7 +68,7 @@ def parse_kept(param: any) -> str:
         return "seguro\n"
     else:
         parsed = str(param).replace("\n", "")
-        return f"<!--Failed: {parsed}-->\n"
+        return f"{parsed} <!--Failed-->\n"
 
 
 def parse_date(param: any) -> str:
@@ -93,7 +91,7 @@ def parse_date(param: any) -> str:
         )
     else:
         parsed = str(param).replace("\n", "")
-        return f"<!--Failed: {parsed}-->\n"
+        return f"{parsed} <!--Failed-->\n"
 
 
 def parse_quest(param: any) -> str:
@@ -124,7 +122,7 @@ def parse_quest(param: any) -> str:
         value = miniquests[0][index]
         return f"{{{{Missão|{value}}}}}\n"
     else:
-        return "{{Desconhecido}}\n"
+        return f"{param} <!--Untranslatable-->\n"
 
 
 def parse_restriction(param: any) -> str:
@@ -135,10 +133,7 @@ def parse_restriction(param: any) -> str:
         return "missão\n"
     elif any(["minigame", "activity"]) in param:
         return "minijogo\n"
-    elif (
-        any(["dungeon", "dungeoneering", "dg", "daemonheim", "kalaboss"])
-        in param
-    ):
+    elif any(["dungeon", "dungeoneering", "dg", "daemonheim", "kalaboss"]) in param:
         return "dungeon\n"
     elif any(["removed", "beta", "gone"]) in param:
         return "removido\n"
@@ -149,7 +144,7 @@ def parse_restriction(param: any) -> str:
     elif "cache" in param:
         return "cache\n"
     else:
-        return param
+        return f"{param} <!--Untranslatable-->\n"
 
 
 def parse_item_name(param):
@@ -157,9 +152,9 @@ def parse_item_name(param):
     param = " ".join([x for x in param.replace("\n", "").split(" ") if x != ""])
     br_name = get_item_br_name_alias(param)
     if br_name:
-        return f"|nome = {br_name}\n|inglês = {param}\n|imagem = [[Ficheiro:{br_name}.png]]\n"
+        return f"|nome = {br_name}\n|inglês = {param}\n|imagem = [[Arquivo:{br_name}.png]]\n"
     else:
-        param = f"<!--{param}-->"
+        param = f"{param} <!--Untranslatable-->"
         return f"|nome = {param}\n|inglês = {param}\n|imagem = {param}\n"
 
 
@@ -169,13 +164,24 @@ def parse_destroy(param):
         return "Largar\n"
     else:
         parsed = str(param).replace("\n", "")
-        return f"<!--Untranslatable: {parsed}-->\n"
+        return f" {parsed} <!--Untranslatable-->\n"
+
+
+def parse_exchange(param):
+    param = str(param).lower()
+    if "gemw" in param:
+        return "gemw\n"
+    elif "no" in param:
+        return "Não\n"
+    else:
+        parsed = str(param).replace("\n", "")
+        return f" {parsed} <!--Untranslatable-->\n"
 
 
 def parse_actions(param):
     param = str(param).lower()
     params = [x.replace(",", "") for x in param.replace("\n", "").split(",") if x != ""]
-    params = [x.rstrip().lstrip()for x in params]
+    params = [x.rstrip().lstrip() for x in params]
     actions_list = get_actions_lists()
     lowered_actions = [x.lower() for x in actions_list[0]]
     actions = []
@@ -184,5 +190,5 @@ def parse_actions(param):
             idx = lowered_actions.index(p)
             actions.append(actions_list[1][idx])
         else:
-            actions.append(f"<!--Unrecognized action: {p}-->")
+            actions.append(f"{p} <!--Unrecognized action-->")
     return ", ".join(actions) + "\n"

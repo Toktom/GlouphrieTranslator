@@ -8,5 +8,5 @@ from .classes import InfoboxParameters
 from .general import jsons_path
 
 InfoboxItem = InfoboxParameters(
-    "Infobox objeto", "Infobox Item", f"{jsons_path}\\item.json"
+    "Infobox objeto", "Infobox Item", jsons_path + "item.json"
 )
