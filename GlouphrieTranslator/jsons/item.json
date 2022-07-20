@@ -18,6 +18,8 @@
     "peso": "weight",
     "ações": "actions",
     "ações_chão": "actions_ground",
+    "ações_equipado": "actions_equipped",
+    "ações_banco": "actions_bank",
     "mercado": "exchange",
     "em morte": "kept",
     "restrição": "restriction",

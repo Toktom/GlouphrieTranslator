@@ -48,8 +48,8 @@ def get_infobox_item(page):
                 param_val = t.get(param.en).value
                 Parser = InfoboxItemParser(param)
                 out += Parser.parse(param_val)
-            except:
-                pass
+            except Exception as e:
+                print(f"Unable to retrieve '{e}' parameter.")
 
         out += f"}}}}"
         return out

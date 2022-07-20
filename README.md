@@ -22,7 +22,7 @@
 
 The tool has the following features:
 
-- Extraction of the Infobox Template from an item's page.
+- Extraction of the Infobox Template from an item's page that doesn't use the **version** system.
 
 ## Examples
 
@@ -34,5 +34,7 @@ The folder [examples](examples) contain some examples of how to use the tool. Cu
 - Add support for navigation box templates;
 - Add documentation to functions;
 - Add automatic installation verification;
+- Add support for the **version** system;
+- Add logging system;
 - Speed optimization (remove for loops where is feasible); and
 - Improve usage of try/except in functions and classes.
