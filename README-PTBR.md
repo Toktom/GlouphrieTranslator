@@ -34,7 +34,6 @@ A pasta [examples](examples) contém alguns exemplos de como utilizar a ferramen
 
 - Adicionar suporte para mais predefinições de infoboxes;
 - Adicionar suporte para predefinições de caixas de navegação;
-- Adicionar documentação para funções;
 - Adicionar verificação automática de instalação;
 - Adicionar suporte para os parâmetros de versão;
 - Adicionar logging;

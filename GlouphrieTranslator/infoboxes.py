@@ -7,6 +7,7 @@ Infoboxes file
 from .classes import InfoboxParameters
 from .general import jsons_path
 
+# Defines the Infobox Item
 InfoboxItem = InfoboxParameters(
     "Infobox objeto", "Infobox Item", jsons_path + "item.json"
 )

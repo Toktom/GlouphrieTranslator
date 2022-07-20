@@ -34,7 +34,6 @@ The folder [examples](examples) contain some examples of how to use the tool. Cu
 
 - Add support for more infoboxes templates;
 - Add support for navigation box templates;
-- Add documentation to functions;
 - Add automatic installation verification;
 - Add support for the **version** parameters system;
 - Add logging system;

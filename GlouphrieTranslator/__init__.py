@@ -27,5 +27,5 @@ __all__ = [
 ]
 
 __author__ = "Michael Markus Ackermann"
-__date__ = "19 July 2022"
-__version__ = "0.0.2c"
+__date__ = "20 July 2022"
+__version__ = "0.0.3"

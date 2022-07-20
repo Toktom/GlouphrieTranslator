@@ -9,6 +9,8 @@ import json
 
 jsons_path = abspath(dirname(__file__)) + "\\jsons\\"
 
+
+# TODO: Put in an overall json file with common stuff.
 months_br = [
     "Janeiro",
     "Fevereiro",
@@ -40,6 +42,12 @@ months_en = [
 
 
 def get_items_list():
+    """
+    Returns a list of all items in the game, with their id, pt-br name and english name.
+
+    Returns:
+        list: A list of all items in the game, with their id, pt-br name and english name.
+    """
     with open(
         abspath(dirname(__file__)) + "\\txts\\items_list.txt", "r", encoding="utf-8"
     ) as f:
@@ -55,23 +63,47 @@ def get_items_list():
 
 
 def get_actions_lists():
+    """
+    Returns a list of all actions supported in the different kinds of infoboxes.
+
+    Returns:
+        list: A list of all actions in english and pt-br
+    """
     with open(jsons_path + "actions_list.json", "r", encoding="utf-8") as json_file:
         actions = json.load(json_file)
         json_file.close()
     return [list(actions.keys()), list(actions.values())]
 
 
-def get_item_names_by_id(id):
+def get_item_names_by_id(id: int) -> list:
+    """
+    Returns the br and english names of an item by its id.
+
+    Parameters:
+        id (int): The id of the item.
+
+    Returns:
+        list: A list with the br and english names of the item.
+    """
     items_list = get_items_list()
     try:
         for item in items_list:
             if int(item[0]) == id:
-                return (item[1], item[2])
+                return item[1], item[2]
     except:
         return None
 
 
-def get_item_br_name_alias(en_name):
+def get_item_br_name_alias(en_name: str) -> str:
+    """
+    Returns the pt-br name of an item by its english name.
+
+    Parameters:
+        en_name (str): The english name of the item.
+
+    Returns:
+        str: The pt-br name of the item.
+    """
     items_list = get_items_list()
     try:
         index = 0
@@ -84,7 +116,16 @@ def get_item_br_name_alias(en_name):
         return None
 
 
-def get_item_en_name_alias(br_name):
+def get_item_en_name_alias(br_name: str) -> str:
+    """
+    Returns the english name of an item by its pt-br name.
+
+    Parameters:
+        br_name (str): The pt-br name of the item.
+
+    Returns:
+        str: The english name of the item.
+    """
     items_list = get_items_list()
     try:
         index = 0

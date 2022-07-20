@@ -16,6 +16,16 @@ from .general import (
 
 
 def parse_int(param: any) -> str:
+    """
+    Parses parameter values to make shure that the expected param is an integer
+    and returns it as a string.
+
+    Parameters:
+        param (any): The parameter value to be parsed.
+
+    Returns:
+        str: The parsed parameter value.
+    """
     param = str(param)
     if isinstance(int(param), int):
         return param
@@ -24,6 +34,16 @@ def parse_int(param: any) -> str:
 
 
 def parse_float(param: any) -> str:
+    """
+    Parses parameter values to make shure that the expected param is a float and
+    returns it as a string.
+
+    Parameters:
+        param (any): The parameter value to be parsed.
+
+    Returns:
+        str: The parsed parameter value.
+    """
     param = str(param)
     if isinstance(float(param), float):
         return param.replace(".", ",")
@@ -32,6 +52,16 @@ def parse_float(param: any) -> str:
 
 
 def parse_yes_no(param: any) -> str:
+    """
+    Parses parameter values to make shure that the expected param is a yes or no
+    and returns it as a pt-br string.
+
+    Parameters:
+        param (any): The parameter value to be parsed.
+
+    Returns:
+        str: The parsed parameter value.
+    """
     param = str(param).lower()
     if "yes" in param:
         return "Sim\n"
@@ -43,6 +73,16 @@ def parse_yes_no(param: any) -> str:
 
 
 def parse_disassembly(param: any) -> str:
+    """
+    Parses parameter values to make shure that the expected param is a supported
+    disassembly value and returns the corresponding pt-br string.
+
+    Parameters:
+        param (any): The parameter value to be parsed.
+
+    Returns:
+        str: The parsed parameter value.
+    """
     param = str(param).lower()
     if "restricted" in param:
         return "restrito\n"
@@ -53,6 +93,10 @@ def parse_disassembly(param: any) -> str:
 
 
 def parse_kept(param: any) -> str:
+    """
+    Parses parameter values to make shure that the expected param is a supported
+    kept value and returns the corresponding pt-br string.
+    """
     param = str(param).lower()
     if "reclaimable" in param:
         return "recuperável\n"
@@ -72,6 +116,15 @@ def parse_kept(param: any) -> str:
 
 
 def parse_date(param: any) -> str:
+    """
+    Parses parameter date value to create the date template in pt-br format.
+
+    Parameters:
+        param (any): The parameter value to be parsed.
+
+    Returns:
+        str: The date template with the corresponding date.
+    """
     param = str(param)
     if any(month in param for month in months_en):
         p = param.replace("[[", "").replace("]]", "")
@@ -95,6 +148,16 @@ def parse_date(param: any) -> str:
 
 
 def parse_quest(param: any) -> str:
+    """
+    Parses parameter to check if is a quest or miniquest and returns the
+    corresponding quest/miniquest template in the pt-br format.
+
+    Parameters:
+        param (any): The parameter value to be parsed.
+
+    Returns:
+        str: The quest template with the corresponding quest or miniquest.
+    """
     param = str(param).replace("[[", "").replace("]]", "").replace("\n", "")
     param = [x for x in param.split(" ") if x != ""]
     param = " ".join(param).lower()
@@ -126,6 +189,16 @@ def parse_quest(param: any) -> str:
 
 
 def parse_restriction(param: any) -> str:
+    """
+    Parses parameter to check if is a restriction and returns the
+    corresponding restriction value pt-br.
+
+    Parameters:
+        param (any): The parameter value to be parsed.
+
+    Returns:
+        str: The restriction value pt-br.
+    """
     param = str(param).lower()
     if "surface" in param:
         return "superfície\n"
@@ -147,7 +220,21 @@ def parse_restriction(param: any) -> str:
         return f"{param} <!--Untranslatable-->\n"
 
 
-def parse_item_name(param):
+def parse_item_name(param: any) -> str:
+    """
+    Parses parameter to check if is a item name and tries to get the item name
+    in pt-br, then proceeds to get create the english and image parameters,
+    based on the pt-br name.
+
+    NOTE: This function is slow, do to the for inside the function that tries
+    to get the pt-br name of the english item name.
+
+    Parameters:
+        param (any): The parameter value to be parsed.
+
+    Returns:
+        str: The parameters for name, image and english page name.
+    """
     param = str(param)
     param = " ".join([x for x in param.replace("\n", "").split(" ") if x != ""])
     br_name = get_item_br_name_alias(param)
@@ -158,7 +245,17 @@ def parse_item_name(param):
         return f"|nome = {param}\n|inglês = {param}\n|imagem = {param}\n"
 
 
-def parse_destroy(param):
+def parse_destroy(param: any) -> str:
+    """
+    Parses parameter to check if has the standard destroy value or a custom
+    destroy message.
+
+    Parameters:
+        param (any): The parameter value to be parsed.
+
+    Returns:
+        str: "Largar" or the untranslated english message.
+    """
     param = str(param).lower()
     if "drop" in param and len(param) <= 7:
         return "Largar\n"
@@ -167,7 +264,17 @@ def parse_destroy(param):
         return f" {parsed} <!--Untranslatable-->\n"
 
 
-def parse_exchange(param):
+def parse_exchange(param: any) -> str:
+    """
+    Parses parameter to check if is an exchange parameter value and returns the
+    corresponding exchange value in the pt-br format.
+
+    Parameters:
+        param (any): The parameter value to be parsed.
+
+    Returns:
+        str: The exchange value with the corresponding exchange.
+    """
     param = str(param).lower()
     if "gemw" in param:
         return "gemw\n"
@@ -178,7 +285,17 @@ def parse_exchange(param):
         return f" {parsed} <!--Untranslatable-->\n"
 
 
-def parse_actions(param):
+def parse_actions(param: any) -> str:
+    """
+    Parses parameter values to get all the actions listed and tries to find the
+    corresponding action in the pt-br actions list relation list.
+
+    Parameters:
+        param (any): The parameters values to be parsed.
+
+    Returns:
+        str: The corresponding actions in pt-br.
+    """
     param = str(param).lower()
     params = [x.replace(",", "") for x in param.replace("\n", "").split(",") if x != ""]
     params = [x.rstrip().lstrip() for x in params]
