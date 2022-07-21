@@ -14,7 +14,7 @@ settings = {
     "url": "https://github.com/Toktom/GlouphrieTranslator",
     "author": "Michael Markus Ackermann",
     "license": "Apache License 2.0",
-    "python_requires" : "<=3.8.10",
+    "python_requires" : ">=3.8.10",
     "install_requires": [
         "mwparserfromhell>=0.6.3",
         "pywikibot>=6.5.0",
@@ -25,6 +25,5 @@ settings = {
         "GlouphrieTranslator": ["jsons/*.json", "txts/*.txt"],
     },
 }
-
 
 setup(**settings)
