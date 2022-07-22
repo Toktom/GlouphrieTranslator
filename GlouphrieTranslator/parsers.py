@@ -8,10 +8,8 @@ import json
 
 from .general import (
     jsons_path,
-    months_br,
-    months_en,
     get_actions_lists,
-    get_item_br_name_alias,
+    get_item_br_name_by_en,
 )
 
 
@@ -126,18 +124,21 @@ def parse_date(param: any) -> str:
         str: The date template with the corresponding date.
     """
     param = str(param)
-    if any(month in param for month in months_en):
+    months = open(jsons_path + "months_names.json")
+    months = json.load(months)
+
+    if any(month in param for month in months.keys()):
         p = param.replace("[[", "").replace("]]", "")
         elements = p.split(" ")
         elements = [e for e in elements if e != ""]
-        month = elements[1]
-        month_index = months_en.index(month)
-        month = months_br[month_index]
+        print(elements[1])
+        print(months[elements[1]])
+        pt_br_month = months[elements[1]]
         return (
             "{{Data|"
             + str(int(elements[0]))
             + "|"
-            + month.lower()
+            + pt_br_month.lower()
             + "|"
             + str(int(elements[2]))
             + "}}\n"
@@ -237,7 +238,7 @@ def parse_item_name(param: any) -> str:
     """
     param = str(param)
     param = " ".join([x for x in param.replace("\n", "").split(" ") if x != ""])
-    br_name = get_item_br_name_alias(param)
+    br_name = get_item_br_name_by_en(param)
     if br_name:
         return f"|nome = {br_name}\n|inglês = {param}\n|imagem = [[Arquivo:{br_name}.png]]\n"
     else:
