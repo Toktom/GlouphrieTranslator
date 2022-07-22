@@ -43,31 +43,21 @@ months_en = [
 
 def get_items_list():
     """
-    Returns a list of all items in the game, with their id, pt-br name and english name.
+    Returns a list of all items in the game, with their pt-br and english names.
 
     Returns:
-        list: A list of all items in the game, with their id, pt-br name and english name.
+        list: A list of all items in the game, with their pt-br and english name.
     """
-    with open(
-        abspath(dirname(__file__)) + "\\txts\\items_list.txt", "r", encoding="utf-8"
-    ) as f:
-        lines = f.readlines()
-        f.close()
-    lines = lines[2:]
-    lines = [x.replace("\n", "") for x in lines]
-    lines = [x.split("\t") for x in lines]
-    lines = [x for x in lines if not "NO_PT_NAME" in x]
-    lines = [x for x in lines if not "P/h" in x]
-    lines = [[y for y in x if y != ""] for x in lines]
-    return lines
+    names = open(abspath(dirname(__file__)) + "\\jsons\\item_names_pt_en.json")
+    names = json.load(names)
+    return names
+
 
 
 def get_actions_lists():
     """
-    Returns a list of all actions supported in the different kinds of infoboxes.
-
     Returns:
-        list: A list of all actions in english and pt-br
+        list: A list of all actions in english and pt-br.
     """
     with open(jsons_path + "actions_list.json", "r", encoding="utf-8") as json_file:
         actions = json.load(json_file)
