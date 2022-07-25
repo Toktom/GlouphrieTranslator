@@ -10,6 +10,7 @@ import json
 
 jsons_path = abspath(dirname(__file__)) + "\\jsons\\"
 
+
 def get_items_list():
     """
     Returns:

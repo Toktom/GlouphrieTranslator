@@ -9,8 +9,9 @@ _**For the English version of this file [click here](README.md).**_
 1. Antes de instalar a ferramenta, você precisa instalar as seguintes dependências:
 
 - [Pywikibot](https://github.com/wikimedia/pywikibot);
-- [MWParserFromHell](https://github.com/earwig/mwparserfromhell); e
-- [requests](https://github.com/psf/requests).
+- [MWParserFromHell](https://github.com/earwig/mwparserfromhell);
+- [requests](https://github.com/psf/requests); e
+- [lxml](https://github.com/lxml/lxml).
 
 2. Instale [git](https://git-scm.com/) para ser capaz de prosseguir com a instalação.
 

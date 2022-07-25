@@ -30,8 +30,9 @@ from .parsers import (
     parse_exchange,
 )
 
+
 def translate_infobox_items(t):
-    def parser(param, param_val, id = None, name = None):
+    def parser(param, param_val, id=None, name=None):
         try:
             if param.en == "name":
                 return parse_item_name(param_val)
@@ -89,15 +90,20 @@ def translate_infobox_items(t):
         return f"|{param.br} = {parsed}"
 
     output = f"{{{{{InfoboxItem.br}\n"
-    
+
     for param in InfoboxItem.parameters:
         try:
             # Kinda ugly, but hey — gets the job done.
             if param.en == "examine":
-                id = int(str(t.get("id").value)) # Cheeky way of getting rid of unwanted spaces.
+                id = int(
+                    str(t.get("id").value)
+                )  # Cheeky way of getting rid of unwanted spaces.
                 name = str(t.get("name").value)
-                name = " ".join([x for x in name.replace("\n", "").split(" ") if x != ""])
-                name = get_item_br_name_by_en(name).replace(" ", "_") # 'parse_item_name()' returns more than only the name, thus can't be used.
+                name = " ".join(
+                    [x for x in name.replace("\n", "").split(" ") if x != ""]
+                )
+                # 'parse_item_name()' returns more than only the name, thus can't be used.
+                name = get_item_br_name_by_en(name).replace(" ", "_")
                 param_val = t.get(param.en).value
                 output += parser(param, param_val, id, name)
             else:
