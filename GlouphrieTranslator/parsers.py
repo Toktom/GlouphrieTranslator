@@ -3,8 +3,11 @@
 Parsers file
 =================
 @Author: Michael Markus Ackermann (a.k.a. Toktom)
+@Coauthor: João Pedro Droval (a.k.a. PvM Dragonic)
 """
 import json
+import requests
+from lxml import html
 
 from .general import (
     jsons_path,
@@ -124,29 +127,35 @@ def parse_date(param: any) -> str:
         str: The date template with the corresponding date.
     """
     param = str(param)
-    months = open(jsons_path + "months_names.json")
-    months = json.load(months)
+    with open(f"{jsons_path}months_names.json", "r", encoding="utf-8") as f:
+        months = json.load(f)
+        f.close()
 
-    if any(month in param for month in months.keys()):
-        p = param.replace("[[", "").replace("]]", "")
-        elements = p.split(" ")
-        elements = [e for e in elements if e != ""]
-        print(elements[1])
-        print(months[elements[1]])
-        pt_br_month = months[elements[1]]
-        return (
-            "{{Data|"
-            + str(int(elements[0]))
-            + "|"
-            + pt_br_month.lower()
-            + "|"
-            + str(int(elements[2]))
-            + "}}\n"
-        )
-    else:
-        parsed = str(param).replace("\n", "")
-        return f"{parsed} <!--Failed-->\n"
+    p = param.replace("[[", "").replace("]]", "")
+    elements = p.split(" ")
 
+    for item in elements:
+        if item in months:
+            # Converting to int removes the ocasional "\n".
+            year = int(elements[elements.index(item) + 1])
+            day = int(elements[elements.index(item) - 1])
+            pt_br_month = months[item]
+            return (f"{{{{Data|{day}|{pt_br_month.lower()}|{year}}}}}\n")
+
+    parsed = str(param).replace("\n", "")
+    return f"{parsed} <!--Failed-->\n"
+
+
+def parse_examine(param: any, id, name) -> str:
+    name = str(name)
+    page = html.fromstring(requests.get(f'https://secure.runescape.com/m=itemdb_rs/l=3/{name}/viewitem?obj={id}').content)
+
+    try:
+        examine = page.xpath('.//div[@class="item-description"]/p/text()')[0]
+        return f"{examine}\n"
+    except IndexError:
+        param = str(param).replace("\n","")
+        return f"{param} <!--Untranslatable-->\n"
 
 def parse_quest(param: any) -> str:
     """

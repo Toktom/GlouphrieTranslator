@@ -3,27 +3,11 @@
 Classes file
 =================
 @Author: Michael Markus Ackermann (a.k.a. Toktom)
+@Coauthor: João Pedro Droval (a.k.a. PvM Dragonic)
 """
 import json
-from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from typing import List
-
-from .parsers import (
-    parse_actions,
-    parse_date,
-    parse_destroy,
-    parse_disassembly,
-    parse_float,
-    parse_int,
-    parse_item_name,
-    parse_kept,
-    parse_quest,
-    parse_restriction,
-    parse_yes_no,
-    parse_exchange,
-)
-
 
 @dataclass
 class Parameter:
@@ -37,36 +21,6 @@ class Parameter:
 
     br: str
     en: str
-
-
-@dataclass
-class InfoboxParamParser(ABC):
-    """
-    A abstract class that represents a parser for a parameter.
-
-    Attributes:
-        parameter (Parameter): The parameter to parse.
-
-    Methods:
-        parse(self, param: str) -> str:
-            Parses the parameter.
-    """
-
-    param: Parameter
-
-    @abstractmethod
-    def parse(self, param: str):
-        """
-        Parses the parameter.
-
-        Parameters:
-            param (str): The parameter to parse.
-
-        Returns:
-            str: The parsed parameter.
-        """
-        pass
-
 
 @dataclass
 class InfoboxParameters:
@@ -147,81 +101,3 @@ class InfoboxParameters:
             json_file.close()
 
         return [list(params.keys()), list(params.values())]
-
-
-@dataclass
-class InfoboxItemParser(InfoboxParamParser):
-    """
-    A class that represents a parser for the Infobox Item.
-
-    Attributes:
-        parameter (Parameter): The parameter to parse.
-
-    Methods:
-        parse(self, param: str) -> str:
-            Parses the parameter.
-    """
-
-    def parse(self, param: str)-> str:
-        """
-        Parses the parameter.
-
-        Parameters:
-            param (str): The parameter to parse.
-
-        Returns:
-            str: The parsed parameter.
-        """
-        try:
-            if self.param.en == "name":
-                return parse_item_name(param)
-            elif self.param.en == "weight":
-                parsed = parse_float(param)
-            elif self.param.en == "quest":
-                parsed = parse_quest(param)
-            elif self.param.en == "disassembly":
-                parsed = parse_disassembly(param)
-            elif self.param.en in ["value"]:
-                parsed = parse_int(param)
-            elif self.param.en == "exchange":
-                parsed = parse_exchange(param)
-            elif self.param.en == "id":
-                if isinstance(param, list):
-                    parsed = [parse_int(x) for x in param]
-                    parsed = ", ".join(parsed)
-                else:
-                    parsed = parse_int(param)
-            elif self.param.en in ["release", "removal"]:
-                parsed = parse_date(param)
-            elif self.param.en == "kept":
-                parsed = parse_kept(param)
-            elif self.param.en == "restriction":
-                parsed = parse_restriction(param)
-            elif self.param.en == "destroy":
-                parsed = parse_destroy(param)
-            elif self.param.en in [
-                "actions",
-                "actions_ground",
-                "actions_equipped",
-                "actions_bank",
-                "actions_currency_pouch",
-            ]:
-                parsed = parse_actions(param)
-            elif self.param.en in [
-                "stacksinbank",
-                "stackable",
-                "equipable",
-                "tradeable",
-                "members",
-                "alchable",
-            ]:
-                parsed = parse_yes_no(param)
-            else:
-                parsed = str(param).replace("\n", "")
-                parsed = f"{parsed} <!--Untranslatable-->\n"
-        except:
-            print("Failed to parse the parameter: ", self.param.en)
-            parsed = str(param).replace("\n", "")
-            parsed = f"{parsed} <!--Failed-->\n"
-
-        return f"|{self.param.br} = {parsed}"

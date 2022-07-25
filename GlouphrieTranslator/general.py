@@ -3,6 +3,7 @@
 General stuff file
 =================
 @Author: Michael Markus Ackermann (a.k.a. Toktom)
+@Coauthor: João Pedro Droval (a.k.a. PvM Dragonic)
 """
 from os.path import abspath, dirname
 import json

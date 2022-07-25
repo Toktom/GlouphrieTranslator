@@ -3,12 +3,12 @@
 Functions file
 =================
 @Author: Michael Markus Ackermann (a.k.a. Toktom)
+@Coauthor: João Pedro Droval (a.k.a. PvM Dragonic)
 """
 import mwparserfromhell as mw
 import pywikibot as pwb
 
-from .classes import InfoboxItemParser
-from .infoboxes import InfoboxItem
+from .infoboxes import InfoboxItem, translate_infobox_items
 
 
 def get_ptbr(title: str):
@@ -78,19 +78,7 @@ def get_infobox_item(page) -> str:
         str: The infobox item.
     """
     try:
-        out = f"{{{{{InfoboxItem.br}\n"
-
         t = get_template_by_name(page, InfoboxItem.en)
-
-        for param in InfoboxItem.parameters:
-            try:
-                param_val = t.get(param.en).value
-                Parser = InfoboxItemParser(param)
-                out += Parser.parse(param_val)
-            except Exception as e:
-                print(f"Unable to retrieve '{e}' parameter.")
-
-        out += f"}}}}"
-        return out
+        return translate_infobox_items(t)
     except:
         raise Exception("Error while parsing infobox item!")

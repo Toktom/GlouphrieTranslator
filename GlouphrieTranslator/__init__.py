@@ -3,8 +3,9 @@
 Module initialization file
 =================
 @Author: Michael Markus Ackermann (a.k.a. Toktom)
+@Coauthor: João Pedro Droval (a.k.a. PvM Dragonic)
 """
-from .classes import InfoboxItemParser, InfoboxParameters
+from .classes import InfoboxParameters
 from .functions import get_infobox_item, get_ptbr, get_rsw
 from .general import (
     get_item_br_name_by_en,
@@ -26,5 +27,6 @@ __all__ = [
 ]
 
 __author__ = "Michael Markus Ackermann"
-__date__ = "20 July 2022"
-__version__ = "0.0.3"
+__coauthor__ = "João Pedro Droval"
+__date__ = "25 July 2022"
+__version__ = "0.0.4"
