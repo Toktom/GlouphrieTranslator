@@ -155,7 +155,7 @@ def parse_examine(param: any, id, name) -> str:
     )
 
     try:
-        examine = page.xpath('.//div[@class="item-description"]/p/text()')[0]
+        examine = page.xpath('.//div[@class="content roughTop"]//div/p/text()')[0]
         return f"{examine}\n"
     except IndexError:
         param = str(param).replace("\n", "")
@@ -235,7 +235,25 @@ def parse_restriction(param: any) -> str:
         return f"{param} <!--Untranslatable-->\n"
 
 
-def parse_item_name(param: any) -> str:
+def parse_version(param: any) -> str:
+    """
+    Parses parameter to check if is a version and to get it's respective
+    pt-br equivalent.
+
+    Parameters:
+        param (any): The version parameter to be parsed.
+
+    Returns:
+        str: The version equivalent in pt-br.
+    """
+    param = str(param)
+    param = param[1:] # The first char is always an empty space.
+    param = param[:-1] # The last char is always a new line.
+
+    return { "new":"Novo\n", "used":"Usado\n", "broken":"Quebrado\n" }.get(param)
+
+
+def parse_item_name(param: any, num: int) -> str:
     """
     Parses parameter to check if is a item name and tries to get the item name
     in pt-br, then proceeds to get create the english and image parameters,
@@ -245,7 +263,8 @@ def parse_item_name(param: any) -> str:
     to get the pt-br name of the english item name.
 
     Parameters:
-        param (any): The parameter value to be parsed.
+        param (any): The parameter value to be parsed;
+        num (int): The number of the param's version.
 
     Returns:
         str: The parameters for name, image and english page name.
@@ -253,11 +272,19 @@ def parse_item_name(param: any) -> str:
     param = str(param)
     param = " ".join([x for x in param.replace("\n", "").split(" ") if x != ""])
     br_name = get_item_br_name_by_en(param)
-    if br_name:
-        return f"|nome = {br_name}\n|inglês = {param}\n|imagem = [[Arquivo:{br_name}.png]]\n"
+    if num == 0:
+        if br_name:
+            return f"|nome = {br_name}\n|inglês = {param}\n|imagem = [[Arquivo:{br_name}.png]]\n"
+        else:
+            param = f"{param} <!--Untranslatable-->"
+            return f"|nome = {param}\n|inglês = {param}\n|imagem = {param}\n"
     else:
-        param = f"{param} <!--Untranslatable-->"
-        return f"|nome = {param}\n|inglês = {param}\n|imagem = {param}\n"
+        if br_name:
+            return f"|nome{num} = {br_name}\n|inglês{num} = {param}\n|imagem{num} = [[Arquivo:{br_name}.png]]\n"
+        else:
+            param = f"{param} <!--Untranslatable-->"
+            return f"|nome{num} = {param}\n|inglês{num} = {param}\n|imagem{num} = {param}\n"
+
 
 
 def parse_destroy(param: any) -> str:

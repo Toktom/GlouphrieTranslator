@@ -26,6 +26,6 @@ __all__ = [
     "InfoboxItem",
 ]
 
-__author__ = "Michael Markus Ackermann, and João Pedro Droval"
-__date__ = "25 July 2022"
-__version__ = "0.0.4"
+__author__ = "Michael Markus Ackermann; João Pedro Droval"
+__date__ = "02 August 2022"
+__version__ = "0.0.5"
