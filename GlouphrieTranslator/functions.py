@@ -7,8 +7,7 @@ Functions file
 """
 import mwparserfromhell as mw
 import pywikibot as pwb
-
-from .infoboxes import InfoboxItem, translate_infobox_items
+import regex as re
 
 
 def get_ptbr(title: str):
@@ -67,18 +66,27 @@ def get_template_by_name(page, name: str):
         return None
 
 
-def get_infobox_item(page) -> str:
+def retrieve_parameters(t) -> list:
     """
-    Returns the translated infobox item.
+    Returns the parameters of the template with the name and versioning
+        (if it's present).
 
     Parameters:
-        page: The page to search the infobox item.
+        t (mwparserfromhell.nodes.Template): The template to search the parameters.
 
     Returns:
-        str: The infobox item.
+        list: The parameters of the template.
     """
-    try:
-        t = get_template_by_name(page, InfoboxItem.en)
-        return translate_infobox_items(t)
-    except:
-        raise Exception("Error while parsing infobox item!")
+    parameters = []
+    for param in t.params:
+        # splits the parameter from it's value
+        param = param.replace("\n", "").split(" = ")
+        # if number in param[0]
+        if re.search(r"\d", param[0]):
+            # get number in param[0]
+            param_number = re.search(r"\d", param[0]).group()
+            parameters.append([param[0].replace(param_number, ""), param_number])
+        else:
+            parameters.append([param[0], "0"])
+
+    return parameters

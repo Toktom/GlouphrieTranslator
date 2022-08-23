@@ -36,5 +36,20 @@
     "Drop": "Largar",
     "Remove": "Remover",
     "Take": "Pegar",
-    "Combine": "Combinar"
+    "Combine": "Combinar",
+    "Rub": "Esfregar",
+    "Emote": "Ação",
+    "Boost": "Bônus",
+    "Perks": "Benefícios",
+    "Perk 1": "Benefício 1",
+    "Perk 2": "Benefício 2",
+    "Combine shards": "Combinar fragmentos",
+    "Withdraw shards": "Retirar fragmentos",
+    "Deploy": "Posicionar",
+    "Detonate" : "Detonar",
+    "String": "Colocar corda",
+    "Open party interface": "Abrir interface de grupo",
+    "Teleport to Daemonheim": "Teleportar para Kalaboss",
+    "Customise": "Personalizar",
+    "Add to tool belt": "Adicionar ao porta-ferramentas"
 }

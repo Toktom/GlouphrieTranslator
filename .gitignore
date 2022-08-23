@@ -2,3 +2,4 @@
 pywikibot.lwp
 throttle.ctrl
 apicache-py3/
+__pycache__/

@@ -10,7 +10,7 @@ from setuptools import setup
 
 settings = {
     "name": "GlouphrieTranslator",
-    "version": "0.0.4",
+    "version": "0.0.6",
     "description": "GlouphrieTranslator (or GT) is an integration of MWParserFromHell and PyWikiBot. This tool allows PT-BR Runescape Wiki editors to increase their editing speed when translating the pages from RSW. The key feature of the tool is the auto-template translator.",
     "url": "https://github.com/Toktom/GlouphrieTranslator",
     "author": "Michael Markus Ackermann, and João Pedro Droval",

@@ -272,18 +272,15 @@ def parse_item_name(param: any, num: int) -> str:
     param = str(param)
     param = " ".join([x for x in param.replace("\n", "").split(" ") if x != ""])
     br_name = get_item_br_name_by_en(param)
-    if num == 0:
+    if int(num) == 0 or int(num) == 1:
         if br_name:
             return f"|nome = {br_name}\n|inglês = {param}\n|imagem = [[Arquivo:{br_name}.png]]\n"
         else:
             param = f"{param} <!--Untranslatable-->"
             return f"|nome = {param}\n|inglês = {param}\n|imagem = {param}\n"
     else:
-        if br_name:
-            return f"|nome{num} = {br_name}\n|inglês{num} = {param}\n|imagem{num} = [[Arquivo:{br_name}.png]]\n"
-        else:
-            param = f"{param} <!--Untranslatable-->"
-            return f"|nome{num} = {param}\n|inglês{num} = {param}\n|imagem{num} = {param}\n"
+        param = f"{param} <!--Untranslatable-->"
+        return f"|nome{num} = {param}\n|inglês{num} = {param}\n|imagem{num} = {param}\n"
 
 
 
