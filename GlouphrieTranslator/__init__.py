@@ -13,7 +13,7 @@ from .general import (
     get_item_names_by_id,
 )
 from .infoboxes import InfoboxItem, get_infobox_item
-
+from .templates import get_zearg_templates, get_navboxes
 __all__ = [
     "InfoboxItemParser",
     "InfoboxParameters",
@@ -24,8 +24,10 @@ __all__ = [
     "get_item_br_name_by_en",
     "get_item_en_name_by_br",
     "InfoboxItem",
+    "get_zearg_templates",
+    "get_navboxes",
 ]
 
 __author__ = "Michael Markus Ackermann; João Pedro Droval"
-__date__ = "22 August 2022"
-__version__ = "0.0.6"
+__date__ = "23 August 2022"
+__version__ = "0.0.7"

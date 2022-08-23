@@ -21,7 +21,7 @@ def get_items_list():
     return names
 
 
-def get_actions_lists():
+def get_actions_list():
     """
     Returns:
         list: A list of all actions in english and pt-br.
@@ -30,6 +30,28 @@ def get_actions_lists():
         actions = json.load(json_file)
         json_file.close()
     return [list(actions.keys()), list(actions.values())]
+
+
+def get_navboxes_list():
+    """
+    Returns:
+        list: A list of all navboxes in english and pt-br.
+    """
+    with open(jsons_path + "navboxes.json", "r", encoding="utf-8") as json_file:
+        navboxes = json.load(json_file)
+        json_file.close()
+    return [list(navboxes.keys()), list(navboxes.values())]
+
+
+def get_zeargt_list():
+    """
+    Returns:
+        list: A list of all zero-argument (zearg) templates in english and pt-br.
+    """
+    with open(jsons_path + "zearg_templates.json", "r", encoding="utf-8") as json_file:
+        zeargt = json.load(json_file)
+        json_file.close()
+    return [list(zeargt.keys()), list(zeargt.values())]
 
 
 def get_item_names_by_id(id: int) -> list:

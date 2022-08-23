@@ -122,6 +122,7 @@ def get_infobox_item(page) -> str:
     """
     try:
         t = get_template_by_name(page, InfoboxItem.en)
+        print("Infobox item found and translated.")
         return translate_infobox_items(t)
     except:
         raise Exception("Error while parsing infobox item!")

@@ -11,7 +11,7 @@ from lxml import html
 
 from .general import (
     jsons_path,
-    get_actions_lists,
+    get_actions_list,
     get_item_br_name_by_en,
 )
 
@@ -338,7 +338,7 @@ def parse_actions(param: any) -> str:
     param = str(param).lower()
     params = [x.replace(",", "") for x in param.replace("\n", "").split(",") if x != ""]
     params = [x.rstrip().lstrip() for x in params]
-    actions_list = get_actions_lists()
+    actions_list = get_actions_list()
     lowered_actions = [x.lower() for x in actions_list[0]]
     actions = []
     for p in params:
