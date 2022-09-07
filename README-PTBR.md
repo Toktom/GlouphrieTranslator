@@ -25,18 +25,17 @@ _**For the English version of this file [click here](README.md).**_
 
 A ferramenta tem as seguintes funções:
 
-- Extração da predefinição Infobox Objeto da página que não utiliza os parâmetros de versão (por exemplo: versão1 e versão2 que resultam em nome1 e nome2);
+- Extração da predefinição Infobox Monstro e Infobox Objeto, além de outras predefinições simples; e
+- Capacidade de traduzir alguns nomes de objetos.
 
 ## Exemplos
 
 A pasta [examples](examples) contém alguns exemplos de como utilizar a ferramenta. Atualmente, existe apenas um exemplo: voltado para extrair a predefinição Infobox Objeto de uma página de Objeto.
 
-## Para fazer
+## Lista de coisas para fazer
 
 - Adicionar suporte para mais predefinições de infoboxes;
-- Adicionar suporte para predefinições de caixas de navegação;
 - Adicionar verificação automática de instalação;
-- Adicionar suporte para os parâmetros de versão;
 - Adicionar logging;
 - Acelerar o desenvolvimento (remover loops quando possível); e
 - Melhorar a utilização de try/except em funções e classes.

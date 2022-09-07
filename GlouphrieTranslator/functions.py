@@ -7,7 +7,7 @@ Functions file
 """
 import mwparserfromhell as mw
 import pywikibot as pwb
-import regex as re
+import re
 
 
 def get_ptbr(title: str):
@@ -81,9 +81,12 @@ def retrieve_parameters(t) -> list:
     for param in t.params:
         # splits the parameter from it's value
         param = param.replace("\n", "").split(" = ")
-        # if number in param[0]
-        if re.search(r"\d", param[0]):
+        # if number with 2 digits in param[0]
+        if re.search(r"\d{2}", param[0]):
             # get number in param[0]
+            param_number = re.search(r"\d{2}", param[0]).group()
+            parameters.append([param[0].replace(param_number, ""), param_number])
+        elif re.search(r"\d", param[0]):
             param_number = re.search(r"\d", param[0]).group()
             parameters.append([param[0].replace(param_number, ""), param_number])
         else:

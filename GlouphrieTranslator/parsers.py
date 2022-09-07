@@ -16,6 +16,11 @@ from .general import (
 )
 
 
+def __untranslatable_or_failed(param: any, _case: str = "Untranslatable") -> str:
+    parsed = str(param).replace("\n", "")
+    return f" {parsed} <!--{_case}-->\n"
+
+
 def parse_int(param: any) -> str:
     """
     Parses parameter values to make shure that the expected param is an integer
@@ -27,7 +32,7 @@ def parse_int(param: any) -> str:
     Returns:
         str: The parsed parameter value.
     """
-    param = str(param)
+    param = str(param).replace(" ", "")
     if isinstance(int(param), int):
         return param
     else:
@@ -45,11 +50,34 @@ def parse_float(param: any) -> str:
     Returns:
         str: The parsed parameter value.
     """
-    param = str(param)
+    param = str(param).replace(" ", "")
     if isinstance(float(param), float):
         return param.replace(".", ",")
     else:
         return param.replace(".", ",") + " <!--Failed-->\n"
+
+
+def parse_int_or_float(param: any) -> str:
+    """
+    Parses if it's an int or a float, can vary.
+
+    Parameters:
+        param (any): The parameter value to be parsed.
+
+    Returns:
+        str: The parsed parameter value.
+    """
+    param = str(param).replace("\n", "").replace(" ", "")
+    if "." in param:
+        if isinstance(float(param), float):
+            return param.replace(".", ",") + "\n"
+        else:
+            return param + " <!--Failed-->\n"
+    else:
+        if isinstance(int(param), int):
+            return param + "\n"
+        else:
+            return param + " <!--Failed-->\n"
 
 
 def parse_yes_no(param: any) -> str:
@@ -69,8 +97,7 @@ def parse_yes_no(param: any) -> str:
     elif "no" in param:
         return "Não\n"
     else:
-        parsed = str(param).replace("\n", "")
-        return f"{parsed} <!--Failed-->\n"
+        __untranslatable_or_failed(param, "Failed")
 
 
 def parse_disassembly(param: any) -> str:
@@ -112,8 +139,7 @@ def parse_kept(param: any) -> str:
     elif "safe" in param:
         return "seguro\n"
     else:
-        parsed = str(param).replace("\n", "")
-        return f"{parsed} <!--Failed-->\n"
+        __untranslatable_or_failed(param, "Failed")
 
 
 def parse_date(param: any) -> str:
@@ -142,11 +168,10 @@ def parse_date(param: any) -> str:
             pt_br_month = months[item]
             return f"{{{{Data|{day}|{pt_br_month.lower()}|{year}}}}}\n"
 
-    parsed = str(param).replace("\n", "")
-    return f"{parsed} <!--Failed-->\n"
+    __untranslatable_or_failed(param, "Failed")
 
 
-def parse_examine(param: any, id, name) -> str:
+def parse_item_examine(param: any, id, name) -> str:
     name = str(name)
     page = html.fromstring(
         requests.get(
@@ -158,8 +183,7 @@ def parse_examine(param: any, id, name) -> str:
         examine = page.xpath('.//div[@class="content roughTop"]//div/p/text()')[0]
         return f"{examine}\n"
     except IndexError:
-        param = str(param).replace("\n", "")
-        return f"{param} <!--Untranslatable-->\n"
+        __untranslatable_or_failed(param)
 
 
 def parse_quest(param: any) -> str:
@@ -235,24 +259,6 @@ def parse_restriction(param: any) -> str:
         return f"{param} <!--Untranslatable-->\n"
 
 
-def parse_version(param: any) -> str:
-    """
-    Parses parameter to check if is a version and to get it's respective
-    pt-br equivalent.
-
-    Parameters:
-        param (any): The version parameter to be parsed.
-
-    Returns:
-        str: The version equivalent in pt-br.
-    """
-    param = str(param)
-    param = param[1:] # The first char is always an empty space.
-    param = param[:-1] # The last char is always a new line.
-
-    return { "new":"Novo\n", "used":"Usado\n", "broken":"Quebrado\n" }.get(param)
-
-
 def parse_item_name(param: any, num: int) -> str:
     """
     Parses parameter to check if is a item name and tries to get the item name
@@ -283,7 +289,6 @@ def parse_item_name(param: any, num: int) -> str:
         return f"|nome{num} = {param}\n|inglês{num} = {param}\n|imagem{num} = {param}\n"
 
 
-
 def parse_destroy(param: any) -> str:
     """
     Parses parameter to check if has the standard destroy value or a custom
@@ -299,8 +304,7 @@ def parse_destroy(param: any) -> str:
     if "drop" in param and len(param) <= 7:
         return "Largar\n"
     else:
-        parsed = str(param).replace("\n", "")
-        return f" {parsed} <!--Untranslatable-->\n"
+        __untranslatable_or_failed(param)
 
 
 def parse_exchange(param: any) -> str:
@@ -320,8 +324,7 @@ def parse_exchange(param: any) -> str:
     elif "no" in param:
         return "Não\n"
     else:
-        parsed = str(param).replace("\n", "")
-        return f" {parsed} <!--Untranslatable-->\n"
+        __untranslatable_or_failed(param)
 
 
 def parse_actions(param: any) -> str:
@@ -348,3 +351,122 @@ def parse_actions(param: any) -> str:
         else:
             actions.append(f"{p} <!--Unrecognized action-->")
     return ", ".join(actions) + "\n"
+
+
+def parse_primarystyle(param: any) -> str:
+    """
+    Parses parameter to check if is a primary style parameter value and returns
+    the corresponding primary style value in the pt-br format.
+
+    Parameters:
+        param (any): The parameter value to be parsed.
+
+    Returns:
+        str: The primary style value with the corresponding primary style.
+    """
+    param = str(param).lower()
+    if "melee" in param:
+        return "corpo a corpo\n"
+    elif "ranged" in param:
+        return "combate à distância\n"
+    elif "magic" in param:
+        return "magia\n"
+    else:
+        __untranslatable_or_failed(param)
+
+
+# TODO: OPTIMIZE THIS SHIT
+def parse_style(param: any) -> str:
+    """
+    Parses parameter to check if is a style parameter value and returns the
+    corresponding style value in the pt-br format.
+
+    Parameters:
+        param (any): The parameter value to be parsed.
+
+    Returns:
+        str: The style value with the corresponding style.
+    """
+    param = str(param).lower()
+    out = []
+    if "," in param:
+        params = [
+            x.replace(",", "") for x in param.replace("\n", "").split(",") if x != ""
+        ]
+        params = [x.rstrip().lstrip() for x in params]
+        for p in params:
+            if p in ["dragonfire", "dragonbreath", "dragon fire", "dragon breath"]:
+                out.append("fogo de dragão")
+            elif p in "melee":
+                out.append("corpo a corpo")
+            elif p in ["ranged", "ranging", "range"]:
+                out.append("combate à distância")
+            elif p in ["magic", "mage"]:
+                out.append("magia")
+            else:
+                parsed = str(p).replace("\n", "")
+                out.append(f" {parsed} <!--Untranslatable-->")
+        return ", ".join(out) + "\n"
+    else:
+        if param in ["dragonfire", "dragonbreath", "dragon fire", "dragon breath"]:
+            return "fogo de dragão\n"
+        elif param in "melee":
+            return "corpo a corpo\n"
+        elif param in ["ranged", "ranging", "range"]:
+            return "combate à distância\n"
+        elif param in ["magic", "mage"]:
+            return "magia\n"
+        else:
+            __untranslatable_or_failed(param)
+
+
+def parse_speed(param: any) -> str:
+    """
+    Parses parameter values to make shure that the expected param is an integer
+    and it's between 0 and 9, to then return it as a string.
+
+    Parameters:
+        param (any): The parameter value to be parsed.
+
+    Returns:
+        str: The parsed parameter value.
+    """
+    param = str(param)
+    if isinstance(int(param), int):
+        if int(param) >= 0 and int(param) <= 9:
+            return param
+        else:
+            return f"{param} <!--Failed-->\n"
+
+
+def parse_poisonous(param: any) -> str:
+    """
+    Parses the value for Infobox Monster, therefore first it checks if the param
+    is an integer, if it is, then it's a "yes", thus will keep the integer. Else
+    if it's not the case of an int value, it will do the "yes and no" parsing.
+
+    Parameters:
+        param (any): The parameter value to be parsed.
+
+    Returns:
+        str: The parsed parameter value.
+    """
+    param = str(param).replace(" ", "").replace("\n", "")
+    if param.isdigit():
+        return param + "\n"
+    elif not param.isdigit():
+        return parse_yes_no(param)
+    else:
+        __untranslatable_or_failed(param, "Failed")
+
+
+def parse_lfpoints(param: any) -> str:
+    """
+    Parameters:
+        param (any): The parameter value to be parsed.
+
+    Returns:
+        str: The parsed parameter value.
+    """
+    param = str(param).replace(",", "")
+    return parse_int(param)

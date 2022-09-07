@@ -38,6 +38,7 @@ def get_zearg_templates(page):
     except Exception as e:
         raise Exception("Error while translating zero-argument templates!")
 
+
 def get_navboxes(page):
     """
     Returns every navbox in the page.

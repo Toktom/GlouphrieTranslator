@@ -25,18 +25,17 @@ _**Para a versão em português deste arquivo, [clique aqui](README-PTBR.md).**_
 
 The tool has the following features:
 
-- Extraction of the Infobox Template from an item's page that doesn't use the **version** parameters system.
+- Extraction of the Infobox Monster and Infobox Item, besides other simple templates; and
+- Capability to translate a few item names.
 
 ## Examples
 
 The folder [examples](examples) contain some examples of how to use the tool. Currently, there is only one example: to extract the **Infobox Item** template from an item page.
 
-## Todos
+## TODO list
 
 - Add support for more infoboxes templates;
-- Add support for navigation box templates;
 - Add automatic installation verification;
-- Add support for the **version** parameters system;
 - Add logging system;
 - Speed optimization (remove for loops if possible); and
 - Improve usage of try/except in functions and classes.

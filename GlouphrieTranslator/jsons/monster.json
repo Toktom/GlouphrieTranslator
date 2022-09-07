@@ -1,6 +1,7 @@
 {
     "versão": "version",
     "nome": "name",
+    "imagem": "image",
     "lançamento": "release",
     "atualização": "update",
     "descontinuado": "removal",
@@ -15,7 +16,7 @@
     "agressivo": "aggressive",
     "venenoso": "poisonous",
     "extermínio nível": "slaylvl",
-    "extermínio exp": "slayexp",
+    "extermínio exp": "slayxp",
     "extermínio categoria": "slayercat",
     "designado por": "assigned_by",
     "dano corpo": "max_melee",
