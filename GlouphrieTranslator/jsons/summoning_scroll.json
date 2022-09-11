@@ -1,0 +1,15 @@
+{
+    "nome": "name",
+    "examinar": "examine",
+    "imagem": "image",
+    "especial": "special",
+    "exp criar": "createxp",
+    "exp uso": "usexp",
+    "avançada ": "high",
+    "básica": "low",
+    "custo": "cost",
+    "nível da troca": "returnlvl",
+    "retorno": "return",
+    "troca": "swap",
+    "mercado": "exchange"
+}

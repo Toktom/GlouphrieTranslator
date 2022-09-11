@@ -7,7 +7,7 @@ Infoboxes file
 """
 
 from .classes import InfoboxParameters
-from .functions import retrieve_parameters, get_template_by_name
+from .functions import get_template_by_name, retrieve_parameters
 from .general import jsons_path
 
 # Defines the Infobox Item
@@ -21,30 +21,39 @@ InfoboxMonster = InfoboxParameters(
 )
 
 
+# Defines the Infobox Familiar
+InfoboxFamiliar = InfoboxParameters(
+    "Infobox Familiar", "Infobox Familiar", jsons_path + "familiar.json"
+)
+
+
 from .parsers import (
     parse_actions,
     parse_date,
     parse_destroy,
     parse_disassembly,
+    parse_exchange,
     parse_float,
     parse_int,
+    parse_int_or_float,
     parse_item_name,
     parse_kept,
+    parse_lfpoints,
+    parse_name_english,
+    parse_poisonous,
+    parse_primarystyle,
     parse_quest,
     parse_restriction,
-    parse_yes_no,
-    parse_exchange,
     parse_speed,
-    parse_primarystyle,
     parse_style,
-    parse_poisonous,
-    parse_lfpoints,
-    parse_int_or_float,
+    parse_yes_no,
 )
 
 
 def translate_infobox_item(t):
     def parser(param, param_val, name=None, num=0):
+        if "None" in param_val:
+            param_val = param_val.replace(" ", "").replace("None", " Nenhum")
         try:
             if param == "name":
                 return parse_item_name(param_val, num)
@@ -89,7 +98,7 @@ def translate_infobox_item(t):
                 parsed = str(param_val).replace("\n", "")
                 parsed = f"{parsed} <!--Untranslatable-->\n"
         except Exception as e:
-            print("Failed to parse the parameter: ", param)
+            print("> Failed to parse the parameter: ", param)
             parsed = str(param_val).replace("\n", "")
             parsed = f"{parsed} <!--Failed-->\n"
 
@@ -114,7 +123,7 @@ def translate_infobox_item(t):
                         output += parser(param[0], param_val, num=param[1])
             except Exception as e:
                 print(param, param_val)
-                print(f"Unable to retrieve {e} parameter.")
+                print(f"> Unable to retrieve {e} parameter.")
 
         output += f"}}}}"
         return output
@@ -132,16 +141,21 @@ def get_infobox_item(page) -> str:
     Returns:
         str: The Infobox Item.
     """
+    print("Trying to find Infobox Item...")
     try:
         t = get_template_by_name(page, InfoboxItem.en)
-        print("Infobox Item found and translated.")
+        print("Infobox Item found and translated.\n" + 50 * "-")
         return translate_infobox_item(t)
     except:
-        raise Exception("Error while parsing Infobox Item!")
+        raise Exception(
+            "> Error while parsing Infobox Item.\nProbably the template is not in the page."
+        )
 
 
 def translate_infobox_monster(t):
     def parser(param, param_val, name=None, num=0):
+        if "None" in param_val:
+            param_val = param_val.replace(" ", "").replace("None", " Nenhum")
         try:
             if "$" in param_val:
                 parsed = str(param_val).replace("\n", "")
@@ -202,11 +216,13 @@ def translate_infobox_monster(t):
                     parsed = parse_date(param_val)
                 elif param == "restriction":
                     parsed = parse_restriction(param_val)
+                elif param == "name":
+                    parsed = parse_name_english(param_val, num)
                 else:
                     parsed = str(param_val).replace("\n", "")
                     parsed = f"{parsed} <!--Untranslatable-->\n"
         except Exception as e:
-            print("Failed to parse the parameter: ", param)
+            print("> Failed to parse the parameter: ", param)
             parsed = str(param_val).replace("\n", "")
             parsed = f"{parsed} <!--Failed-->\n"
 
@@ -230,7 +246,7 @@ def translate_infobox_monster(t):
                         output += parser(param[0], param_val, num=param[1])
             except Exception as e:
                 print(param, param_val)
-                print(f"Unable to retrieve {e} parameter.")
+                print(f"> Unable to retrieve {e} parameter.")
 
         output += f"}}}}"
         return output
@@ -248,9 +264,102 @@ def get_infobox_monster(page) -> str:
     Returns:
         str: The Infobox Monster.
     """
+    print("Trying to find Infobox Monster...")
     try:
         t = get_template_by_name(page, InfoboxMonster.en)
-        print("Infobox Monster found and translated.")
+        print("Infobox Monster found and translated.\n" + 50 * "-")
         return translate_infobox_monster(t)
     except:
-        raise Exception("Error while parsing Infobox Monster!")
+        raise Exception(
+            "> Error while parsing Infobox Monster.\nProbably the template is not in the page."
+        )
+
+
+def translate_infobox_familiar(t):
+    def parser(param, param_val, name=None, num=0):
+        if "None" in param_val:
+            param_val = param_val.replace(" ", "").replace("None", " Nenhum")
+        try:
+            if param == "name":
+                parsed = parse_name_english(param_val, num)
+            elif param in [
+                "id",
+                "level",
+                "attack",
+                "defence",
+                "magic",
+                "ranged",
+                "max",
+                "lifepoints",
+                "points",
+                "time",
+                "combat",
+            ]:
+                parsed = parse_int(param_val)
+            elif param == "immune to poison":
+                parsed = parse_yes_no(param_val)
+            elif param == "style":
+                parsed = parse_primarystyle(param_val)
+            elif param == "release":
+                parsed = parse_date(param_val)
+            elif param == "size":
+                parsed = str(param_val)
+            else:
+                parsed = str(param_val).replace("\n", "")
+                parsed = f"{parsed} <!--Untranslatable-->\n"
+        except Exception as e:
+            print("> Failed to parse the parameter: ", param)
+            parsed = str(param_val).replace("\n", "")
+            parsed = f"{parsed} <!--Failed-->\n"
+
+        if int(num) > 0:
+            return f"|{InfoboxFamiliar.get_parameter(param).br}{num} = {parsed}"
+        else:
+            return f"|{InfoboxFamiliar.get_parameter(param).br} = {parsed}"
+
+    def parse_all(t):
+        parameters = retrieve_parameters(t)
+        output = f"{{{{{InfoboxFamiliar.br}\n"
+
+        for param in parameters:
+            try:
+                if int(param[1]) > 0:
+                    param_val = t.get(param[0] + param[1]).value
+                    output += parser(param[0], param_val, num=param[1])
+                else:
+                    param_val = t.get(param[0]).value
+                    output += parser(param[0], param_val, num=param[1])
+            except Exception as e:
+                print(param, param_val)
+                print(f"> Unable to retrieve {e} parameter.")
+
+        output += f"}}}}"
+        return output
+
+    return parse_all(t)
+
+
+def get_infobox_familiar(page) -> str:
+    """
+    Returns the translated Infobox Familiar.
+
+    Parameters:
+        page: The page to search the Infobox Familiar.
+
+    Returns:
+        str: The Infobox Familiar.
+    """
+    print("Trying to find Infobox Familiar...")
+    try:
+        t = get_template_by_name(page, InfoboxFamiliar.en)
+        output = translate_infobox_familiar(t)
+    except AttributeError:
+        t = get_template_by_name(page, "Infobox familiar")
+        output = translate_infobox_familiar(t)
+    except:
+        raise Exception(
+            "> Error while parsing Infobox Familiar!\nProbably the template is not in the page."
+        )
+
+    print("Infobox Familiar found and translated.\n" + 50 * "-")
+    return output

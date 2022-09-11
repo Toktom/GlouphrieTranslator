@@ -25,8 +25,12 @@ _**Para a versão em português deste arquivo, [clique aqui](README-PTBR.md).**_
 
 The tool has the following features:
 
-- Extraction of the Infobox Monster and Infobox Item, besides other simple templates; and
-- Capability to translate a few item names.
+- Extraction of the Infoboxes from the list below, besides other simple templates.
+  - Infobox Item;
+  - Infobox Monster;
+  - Infobox Familiar;
+  - Databox Summoning Pouch; and
+  - Databox Summoning Scroll.
 
 ## Examples
 

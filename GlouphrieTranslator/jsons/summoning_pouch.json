@@ -1,0 +1,16 @@
+{
+    "nome": "name",
+    "examinar": "examine",
+    "imagem": "image",
+    "fragmentos": "shards",
+    "talismã": "charm",
+    "terciário": "tertiary",
+    "custoterciário": "tertiarycost",
+    "exp criar": "createxp",
+    "exp uso": "usexp",
+    "avançada ": "high",
+    "básica": "low",
+    "custo": "cost",
+    "nível da troca": "returnlvl",
+    "mercado": "exchange"
+}

@@ -25,8 +25,12 @@ _**For the English version of this file [click here](README.md).**_
 
 A ferramenta tem as seguintes funções:
 
-- Extração da predefinição Infobox Monstro e Infobox Objeto, além de outras predefinições simples; e
-- Capacidade de traduzir alguns nomes de objetos.
+- Extração da predefinições da lista abaixo, além de outras predefinições simples.
+  - Infobox Objeto;
+  - Infobox Monstro;
+  - Infobox Familiar;
+  - Databox Algibeiras de Evocação; e
+  - Databox Pergaminhos de Evocação.
 
 ## Exemplos
 

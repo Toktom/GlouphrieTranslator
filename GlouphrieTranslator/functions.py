@@ -80,7 +80,7 @@ def retrieve_parameters(t) -> list:
     parameters = []
     for param in t.params:
         # splits the parameter from it's value
-        param = param.replace("\n", "").split(" = ")
+        param = param.replace("\n", "").split(" =")
         # if number with 2 digits in param[0]
         if re.search(r"\d{2}", param[0]):
             # get number in param[0]

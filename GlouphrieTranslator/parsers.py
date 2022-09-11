@@ -54,10 +54,10 @@ def parse_float(param: any) -> str:
     if isinstance(float(param), float):
         return param.replace(".", ",")
     else:
-        return param.replace(".", ",") + " <!--Failed-->\n"
+        return param + " <!--Failed-->\n"
 
 
-def parse_int_or_float(param: any) -> str:
+def parse_int_or_float(param: any, longfloat=False) -> str:
     """
     Parses if it's an int or a float, can vary.
 
@@ -68,16 +68,31 @@ def parse_int_or_float(param: any) -> str:
         str: The parsed parameter value.
     """
     param = str(param).replace("\n", "").replace(" ", "")
-    if "." in param:
-        if isinstance(float(param), float):
-            return param.replace(".", ",") + "\n"
+    if longfloat:
+        if "," in param:
+            try:
+                if isinstance(float(param.replace(",", ".")), float):
+                    return param.replace(",", "") + "\n"
+            except:
+                return param + " <!--Failed-->\n"
         else:
-            return param + " <!--Failed-->\n"
+            try:
+                if isinstance(int(param), int):
+                    return param + "\n"
+            except:
+                return param + " <!--Failed-->\n"
     else:
-        if isinstance(int(param), int):
-            return param + "\n"
+        if "." in param:
+            try:
+                return parse_float(param)
+            except:
+                return param + " <!--Failed-->\n"
         else:
-            return param + " <!--Failed-->\n"
+            try:
+                if isinstance(int(param), int):
+                    return param + "\n"
+            except:
+                return param + " <!--Failed-->\n"
 
 
 def parse_yes_no(param: any) -> str:
@@ -470,3 +485,50 @@ def parse_lfpoints(param: any) -> str:
     """
     param = str(param).replace(",", "")
     return parse_int(param)
+
+
+def parse_name_english(param: any, num: int) -> str:
+    """
+    Parses the name without translation it, but uses the english name as the
+    name for the "inglês" (english) parameter.
+
+    Parameters:
+        param (any): The parameter value to be parsed;
+        num (int): The number of the param's version.
+
+    Returns:
+        str: The parameters for name, image and english page name.
+    """
+    param = str(param)
+    param = " ".join([x for x in param.replace("\n", "").split(" ") if x != ""])
+    if int(num) == 0 or int(num) == 1:
+        param = f"{param} <!--Untranslatable-->"
+        return f"{param}\n|inglês = {param}\n"
+    else:
+        param = f"{param} <!--Untranslatable-->"
+        return f"|nome{num} = {param}\n|inglês{num} = {param}\n"
+
+
+def parse_charm(param: any) -> str:
+    """
+    Parses parameter for charm values.
+
+    Parameters:
+        param (any): The parameter value to be parsed.
+
+    Returns:
+        str: The charm value in portuguese.
+    """
+    param = str(param).lower().replace("\n", "")
+    if "blue" in param:
+        return "azul\n"
+    elif "crimson" in param:
+        return "carmesin\n"
+    elif "green" in param:
+        return "verde\n"
+    elif "gold" in param:
+        return "dourado\n"
+    elif "elder" in param:
+        return "ancião\n"
+    else:
+        __untranslatable_or_failed(param)
