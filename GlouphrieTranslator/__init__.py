@@ -12,7 +12,7 @@ from .databoxes import (
     get_databox_summoning_pouch,
     get_databox_summoning_scroll,
 )
-from .functions import get_ptbr, get_rsw
+from .functions import get_ptbr, get_rsw, get_template_by_name, retrieve_parameters
 from .general import (
     get_item_br_name_by_en,
     get_item_en_name_by_br,
@@ -48,8 +48,10 @@ __all__ = [
     "DataboxSummoningScroll",
     "get_zearg_templates",
     "get_navboxes",
+    "get_template_by_name",
+    "retrieve_parameters",
 ]
 
 __author__ = "Michael Markus Ackermann; João Pedro Droval"
-__date__ = "11 September 2022"
-__version__ = "0.0.9"
+__date__ = "30 October 2022"
+__version__ = "0.0.10"

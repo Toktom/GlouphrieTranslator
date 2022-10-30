@@ -21,7 +21,7 @@ def get_ptbr(title: str):
         str: The wikicode parsed of the pt-br page.
         bool: True if the page exists, False otherwise.
     """
-    site = pwb.Site()
+    site = pwb.Site("pt-br", "rsw")
     page = pwb.Page(site, title)
     text = page.get()
     if_exist = page.exists()
